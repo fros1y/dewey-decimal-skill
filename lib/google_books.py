@@ -133,7 +133,7 @@ def main() -> None:
     if result is None:
         json.dump(None, sys.stdout)
         print()
-        sys.exit(1)
+        sys.exit(0)
 
     json.dump(result, sys.stdout, ensure_ascii=False, indent=2)
     print()
