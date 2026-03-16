@@ -1,17 +1,17 @@
 ---
 name: dewey-classification
-description: Assign Dewey Decimal categories to books and determine correct shelf location in __BOOKS_DIR__/. Handles directory leafing rules for when to create subcategories. Use when cataloging books or reorganizing library structure.
+description: Assign Dewey Decimal categories to books and determine the correct shelf location in the library directory. Handles directory leafing rules for when to create subcategories. Use when cataloging books or reorganizing library structure.
 ---
 
 # Dewey Classification
 
-Assign Dewey codes and determine shelf location in __BOOKS_DIR__/.
+Assign Dewey codes and determine the shelf location within the library directory.
 
 ## Assignment Process
 
 1. Identify primary subject matter
 2. **ALWAYS read data/codes.md** to find the correct code and category name
-3. Check existing __BOOKS_DIR__/ directory structure
+3. Check the existing library directory structure
 4. Apply leafing rules to determine final path
 
 ## CRITICAL: Directory Naming
@@ -74,7 +74,7 @@ When math reaches 3+ books, create 510 subdirectory.
 
 ## Current Structure
 
-Check __BOOKS_DIR__/ before placing. Always verify directory names against data/codes.md.
+Check the library directory before placing. Always verify directory names against data/codes.md.
 
 Subdirectories are created dynamically based on leafing rules. Do not assume a fixed structure - scan the actual directory and cross-reference with data/codes.md.
 

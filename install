@@ -2,63 +2,18 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CONFIG_FILE="${SCRIPT_DIR}/config.ini"
 TARGET_DIR="${HOME}/.claude"
-
-parse_ini() {
-    local file="$1"
-    local section=""
-    while IFS= read -r line || [[ -n "$line" ]]; do
-        line="${line%%#*}"
-        line="${line%%[[:space:]]}"
-        [[ -z "$line" ]] && continue
-        if [[ "$line" =~ ^\[([^\]]+)\]$ ]]; then
-            section="${BASH_REMATCH[1]}"
-        elif [[ "$line" =~ ^([^=]+)=(.*)$ ]]; then
-            local key="${BASH_REMATCH[1]}"
-            local value="${BASH_REMATCH[2]}"
-            key="${key%%[[:space:]]}"
-            key="${key##[[:space:]]}"
-            value="${value%%[[:space:]]}"
-            value="${value##[[:space:]]}"
-            if [[ "$value" =~ ^\".*\"$ || "$value" =~ ^\'.*\'$ ]]; then
-                value="${value:1:${#value}-2}"
-            fi
-            value="${value/#\~/$HOME}"
-            printf -v "CONFIG_${section^^}_${key^^}" '%s' "$value"
-        fi
-    done < "$file"
-}
-
-substitute_vars() {
-    local content="$1"
-    content="${content//__ARRIVALS_DIR__/${CONFIG_PATHS_ARRIVALS_DIR}}"
-    content="${content//__BOOKS_DIR__/${CONFIG_PATHS_BOOKS_DIR}}"
-    echo "$content"
-}
 
 install_file() {
     local src="$1"
     local dest="$2"
-    local content
-    content="$(cat "$src")"
-    content="$(substitute_vars "$content")"
     mkdir -p "$(dirname "$dest")"
-    echo "$content" > "$dest"
+    cp "$src" "$dest"
     echo "Installed: $dest"
 }
 
 main() {
-    if [[ ! -f "$CONFIG_FILE" ]]; then
-        echo "Error: config.ini not found at $CONFIG_FILE"
-        exit 1
-    fi
-
-    parse_ini "$CONFIG_FILE"
-
     echo "Installing dewey book cataloging agent..."
-    echo "  Arrivals: ${CONFIG_PATHS_ARRIVALS_DIR}"
-    echo "  Books: ${CONFIG_PATHS_BOOKS_DIR}"
     echo ""
 
     mkdir -p "${TARGET_DIR}/agents"

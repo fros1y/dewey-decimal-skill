@@ -10,9 +10,13 @@ A Claude agent to organize ebooks by the [Dewey Decimal](https://en.wikipedia.or
 
 ## Setup
 
-1. Copy `config.example.ini` to `config.ini` and edit the paths. [^1]
-2. Ensure your `arrivals_dir` and `books_dir` paths exist.
-3. Run `./install` to install the agents/skills into `~/.claude`.
+Run `./install` to install the agents and skills into `~/.claude`.
+
+```bash
+./install
+```
+
+The agent uses `~/Downloads` as the default source directory and `~/Books` as the default library directory. You can override either at any time by mentioning the path in your instruction (see [Usage](#usage)).
 
 ## Usage
 
@@ -21,11 +25,20 @@ Run the agent:
 claude --agent rename-books
 ```
 
-For single-file processing, specify the file path. For batch processing, point it at your arrivals directory.
+The agent will process ebooks from `~/Downloads` and move them into `~/Books/` by default.
+
+You can specify different paths directly in your instruction:
+
+```
+catalog books from /mnt/usb/books into ~/Library
+process ~/Downloads/novel.epub
+```
+
+For single-file processing, specify the file path. For batch processing, point it at a directory.
 
 ### History File
 
-The agent will store a history file documenting the before and after filenames, paths, and hash of each book it touches at `$arrivals_dir/renames.jsonl`.
+The agent stores a history file documenting the before and after filenames, paths, and hash of each book it processes at `<library directory>/renames.jsonl`.
 
 ### Regenerating `data/codes.md`
 
@@ -52,6 +65,4 @@ Having already learned the topology of DDC codes with respect to library shelvin
 
 - Code - [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html)
 - Text - [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
-
-[^1]: The `[permissions]` section is currently unused; agent runs appeared to ignore a local `~/.claude/settings.local.json`.
 

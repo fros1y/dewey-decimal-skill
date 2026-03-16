@@ -1,6 +1,6 @@
 ---
 name: rename-books
-description: Process ebooks from __ARRIVALS_DIR__/ into cataloged library. Extracts metadata, formats filenames, assigns Dewey categories, moves files to __BOOKS_DIR__/. Supports EPUB, PDF, MOBI, AZW, LIT, and HTML formats. Use for batch processing new ebooks or correcting existing catalog entries.
+description: Process ebooks into a cataloged library. Extracts metadata, formats filenames, assigns Dewey categories, and moves files to the library directory. Supports EPUB, PDF, MOBI, AZW, LIT, and HTML formats. Use for batch processing new ebooks or correcting existing catalog entries.
 tools: Read, Glob, Grep, Bash, Write, Edit
 model: haiku
 ---
@@ -23,7 +23,7 @@ Look for an explicit path in the user's instruction:
 
 - A path to a single file (e.g. `~/Downloads/book.epub`, `/tmp/novel.pdf`)
 - A path to a directory (e.g. `from ~/Downloads`, `in /mnt/usb/books`)
-- The word "arrivals" or "inbox" — treat as __ARRIVALS_DIR__
+- The word "arrivals" or "inbox" — treat as `~/Downloads`
 
 Common patterns to detect:
 
@@ -33,7 +33,7 @@ Common patterns to detect:
 | "catalog books from /some/dir" | /some/dir/ (directory) |
 | "rename /some/dir" | /some/dir/ (directory) |
 | "this file: /path/to/book.pdf" | /path/to/book.pdf (single file) |
-| no path mentioned | __ARRIVALS_DIR__/ (default) |
+| no path mentioned | ~/Downloads/ (default) |
 
 ### Destination (output)
 
@@ -46,7 +46,7 @@ Look for an explicit destination in the user's instruction:
 | "into /some/dir" | /some/dir/ |
 | "to /some/dir" | /some/dir/ |
 | "destination /some/dir" | /some/dir/ |
-| no destination mentioned | __BOOKS_DIR__/ (default) |
+| no destination mentioned | ~/Books/ (default) |
 
 Resolve `~` to the user's home directory. Convert all inferred paths to absolute paths before use.
 
@@ -75,15 +75,15 @@ Resolve `~` to the user's home directory. Convert all inferred paths to absolute
 Append JSON lines to <destination>/renames.jsonl:
 
 ```json
-{"hash":"sha256:...","modified":"2025-12-20T12:00:00Z","old_path":"__ARRIVALS_DIR__/...","new_path":"__BOOKS_DIR__/640 - Home Economics & Cooking/Author, Name - Title (Year).epub"}
+{"hash":"sha256:...","modified":"2025-12-20T12:00:00Z","old_path":"<source>/...","new_path":"<destination>/640 - Home Economics & Cooking/Author, Name - Title (Year).epub"}
 ```
 
 Use full absolute paths including category names (e.g., `800 - Literature/811 - N. American Poetry/`), not abbreviated codes.
 
 ## Constraints
 
-- Source: __ARRIVALS_DIR__/
-- Destination: __BOOKS_DIR__/[Dewey Category]/[filename]
+- Source: inferred from user instruction, default ~/Downloads/
+- Destination: inferred from user instruction, default ~/Books/[Dewey Category]/[filename]
 - Required metadata: author, title, year
 - Do not modify file contents
 - Preserve file extension
@@ -92,13 +92,14 @@ Use full absolute paths including category names (e.g., `800 - Literature/811 - 
 
 ## Audit Mode
 
-Verify and correct existing library files. Invoke with: "audit my library" or "audit __BOOKS_DIR__"
+Verify and correct existing library files. Invoke with: "audit my library" or "audit <library directory>"
 
 ### Workflow
 
-1. Build hash index from existing __BOOKS_DIR__/renames.jsonl
-2. Scan all files in __BOOKS_DIR__/ recursively
-3. For each file:
+1. Infer library directory from user instruction (see Location Inference); default ~/Books/
+2. Build hash index from existing <library directory>/renames.jsonl
+3. Scan all files in <library directory>/ recursively
+4. For each file:
    a. Compute SHA-256 hash
    b. Check for duplicates (same hash, different path)
    c. Extract metadata from file
@@ -111,7 +112,7 @@ Verify and correct existing library files. Invoke with: "audit my library" or "a
 Before processing, build hash map from all files:
 
 ```bash
-find __BOOKS_DIR__ -type f \( -name "*.epub" -o -name "*.pdf" -o -name "*.mobi" -o -name "*.azw" -o -name "*.azw3" -o -name "*.lit" -o -name "*.html" -o -name "*.htm" -o -name "*.djvu" \) -exec sha256sum {} \;
+find <library directory> -type f \( -name "*.epub" -o -name "*.pdf" -o -name "*.mobi" -o -name "*.azw" -o -name "*.azw3" -o -name "*.lit" -o -name "*.html" -o -name "*.htm" -o -name "*.djvu" \) -exec sha256sum {} \;
 ```
 
 Group by hash. Report duplicates:
@@ -134,7 +135,7 @@ If author/title mismatch: flag for review, do not auto-correct.
 ### Audit Log Format
 
 ```json
-{"hash":"sha256:...","modified":"2025-12-20T12:00:00Z","old_path":"__BOOKS_DIR__/.../Book (2004).epub","new_path":"__BOOKS_DIR__/.../Book (2019).epub","audit":"year_correction","reason":"EPUB dc:date=2019, filename had 2004"}
+{"hash":"sha256:...","modified":"2025-12-20T12:00:00Z","old_path":"<library directory>/.../Book (2004).epub","new_path":"<library directory>/.../Book (2019).epub","audit":"year_correction","reason":"EPUB dc:date=2019, filename had 2004"}
 ```
 
 Additional audit types:
