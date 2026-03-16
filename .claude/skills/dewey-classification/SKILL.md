@@ -1,17 +1,17 @@
 ---
 name: dewey-classification
-description: Assign Dewey Decimal categories to books and determine correct shelf location in __BOOKS_DIR__/. Handles directory leafing rules for when to create subcategories. Use when cataloging books or reorganizing library structure.
+description: Assign Dewey Decimal categories to books and determine the correct shelf location in the library directory. Handles directory leafing rules for when to create subcategories. Use when cataloging books or reorganizing library structure.
 ---
 
 # Dewey Classification
 
-Assign Dewey codes and determine shelf location in __BOOKS_DIR__/.
+Assign Dewey codes and determine the shelf location within the library directory.
 
 ## Assignment Process
 
 1. Identify primary subject matter
-2. **ALWAYS read data/codes.md** to find the correct code and category name
-3. Check existing __BOOKS_DIR__/ directory structure
+2. **ALWAYS read data/codes.md** (located in the `data/` folder of your Claude config directory) to find the correct code and category name
+3. Check the existing library directory structure
 4. Apply leafing rules to determine final path
 
 ## CRITICAL: Directory Naming
@@ -20,14 +20,14 @@ Assign Dewey codes and determine shelf location in __BOOKS_DIR__/.
 
 1. Read data/codes.md
 2. Find the exact line matching the code (e.g., `- 130 Parapsychology and occultism`)
-3. Use the EXACT name from that file: `130 - Parapsychology and occultism`
+3. Use the EXACT description from that line as the directory name
 
-Format: `XXX - [exact name from codes.md]`
+Format: `[exact description from codes.md]`
 
 Examples from data/codes.md:
-- `- 110 Metaphysics` → directory: `110 - Metaphysics`
-- `- 130 Parapsychology and occultism` → directory: `130 - Parapsychology and occultism`
-- `- 160 Philosophical logic` → directory: `160 - Philosophical logic`
+- `- 110 Metaphysics` → directory: `Metaphysics`
+- `- 130 Parapsychology and occultism` → directory: `Parapsychology and occultism`
+- `- 160 Philosophical logic` → directory: `Philosophical logic`
 
 **If you cannot find a code in data/codes.md, ask the user.**
 
@@ -50,31 +50,31 @@ Same rule applies recursively: create XYZ under XY0 when XY0 has 6+ books and 3+
 - **Never create empty directories**
 - **Never create a subdivision with fewer than 3 books**
 - Keep books at the parent level until the threshold is reached
-- Example: If you have 2 ethics books in 100/, leave them in 100/. Do not create 170/ until you have 3+ ethics books AND 6+ total in 100/.
+- Example: If you have 2 ethics books in Philosophy/, leave them in Philosophy/. Do not create Ethics/ until you have 3+ ethics books AND 6+ total in Philosophy/.
 
 The goal is minimal bureaucratic structure. Only subdivide when the volume justifies separating material from the pack.
 
 ### Example
 
 ```
-500 - Natural Sciences and Mathematics/
+Natural sciences & mathematics/
   (5 physics books, 2 math books, 1 astronomy book)
 ```
 
-Total: 8 books. Physics has 5 (3+ threshold met). Create 530 subdirectory:
+Total: 8 books. Physics has 5 (3+ threshold met). Create Physics subdirectory:
 
 ```
-500 - Natural Sciences and Mathematics/
-  530 - Physics/
+Natural sciences & mathematics/
+  Physics/
     (5 physics books)
-  (2 math books, 1 astronomy book remain in 500)
+  (2 math books, 1 astronomy book remain in Natural sciences & mathematics)
 ```
 
-When math reaches 3+ books, create 510 subdirectory.
+When math reaches 3+ books, create Mathematics subdirectory.
 
 ## Current Structure
 
-Check __BOOKS_DIR__/ before placing. Always verify directory names against data/codes.md.
+Check the library directory before placing. Always verify directory names against data/codes.md.
 
 Subdirectories are created dynamically based on leafing rules. Do not assume a fixed structure - scan the actual directory and cross-reference with data/codes.md.
 
@@ -82,14 +82,14 @@ Subdirectories are created dynamically based on leafing rules. Do not assume a f
 
 Always look up the exact code and name in data/codes.md. Common top-level categories:
 
-- **000** - Computer science, information, general works
-- **100** - Philosophy & psychology (includes 150 Psychology)
-- **300** - Social sciences (economics, politics, law)
-- **500** - Natural sciences and mathematics
-- **600** - Technology (includes 640 Home economics)
-- **700** - Arts
-- **800** - Literature (810 N. American, 820 English, 890 other languages)
-- **900** - History & geography (includes 920 Biography)
+- **000s** - Computer science, information & general works
+- **100s** - Philosophy (includes Psychology)
+- **300s** - Social sciences (economics, politics, law)
+- **500s** - Natural sciences & mathematics
+- **600s** - Technology (includes Home & family management)
+- **700s** - Arts
+- **800s** - Literature (American, English, and other language literatures)
+- **900s** - History & geography (includes Biography)
 
 ### Classification Examples
 
@@ -103,7 +103,7 @@ When classifying, find the most specific applicable code:
 
 ## Code Reference
 
-The authoritative source is data/codes.md. Read it before every classification decision.
+The authoritative source is `data/codes.md` (in the `data/` folder of your Claude config directory). Read it before every classification decision.
 
 ## When to Ask User
 
