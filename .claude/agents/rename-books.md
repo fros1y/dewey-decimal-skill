@@ -75,10 +75,10 @@ Resolve `~` to the user's home directory. Convert all inferred paths to absolute
 Append JSON lines to <destination>/renames.jsonl:
 
 ```json
-{"hash":"sha256:...","modified":"2025-12-20T12:00:00Z","old_path":"<source>/...","new_path":"<destination>/640 - Home Economics & Cooking/Author, Name - Title (Year).epub"}
+{"hash":"sha256:...","modified":"2025-12-20T12:00:00Z","old_path":"<source>/...","new_path":"<destination>/Food & drink/Author, Name - Title (Year).epub"}
 ```
 
-Use full absolute paths including category names (e.g., `800 - Literature/811 - N. American Poetry/`), not abbreviated codes.
+Use full absolute paths including category names (e.g., `Literature (Belles-lettres) & rhetoric/American poetry in English/`), not abbreviated codes.
 
 ## Constraints
 
