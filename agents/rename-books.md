@@ -1,6 +1,6 @@
 ---
 name: rename-books
-description: Process ebooks from __ARRIVALS_DIR__/ into cataloged library. Extracts metadata, formats filenames, assigns Dewey categories, moves files to __BOOKS_DIR__/. Use for batch processing new ebooks or correcting existing catalog entries.
+description: Process ebooks from __ARRIVALS_DIR__/ into cataloged library. Extracts metadata, formats filenames, assigns Dewey categories, moves files to __BOOKS_DIR__/. Supports EPUB, PDF, MOBI, AZW, LIT, and HTML formats. Use for batch processing new ebooks or correcting existing catalog entries.
 tools: Read, Glob, Grep, Bash, Write, Edit
 model: haiku
 ---
@@ -26,7 +26,7 @@ Execute all steps without requesting approval. Do not ask before running command
 
 ### Batch Processing
 
-1. List all EPUB/PDF/MOBI/DJVU files in source directory
+1. List all EPUB/PDF/MOBI/AZW/LIT/HTML files in source directory
 2. For each file, execute steps 1-4 (extract, format, classify, hash)
 3. Log all operations to __BOOKS_DIR__/renames.jsonl
 4. Move all files
@@ -72,7 +72,7 @@ Verify and correct existing library files. Invoke with: "audit my library" or "a
 Before processing, build hash map from all files:
 
 ```bash
-find __BOOKS_DIR__ -type f \( -name "*.epub" -o -name "*.pdf" -o -name "*.mobi" -o -name "*.djvu" \) -exec sha256sum {} \;
+find __BOOKS_DIR__ -type f \( -name "*.epub" -o -name "*.pdf" -o -name "*.mobi" -o -name "*.azw" -o -name "*.azw3" -o -name "*.lit" -o -name "*.html" -o -name "*.htm" -o -name "*.djvu" \) -exec sha256sum {} \;
 ```
 
 Group by hash. Report duplicates:
