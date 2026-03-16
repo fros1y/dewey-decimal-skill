@@ -13,27 +13,66 @@ Process ebook files into a cataloged library collection.
 
 Execute all steps without requesting approval. Do not ask before running commands, reading files, listing directories, computing hashes, or logging operations. Only ask the user for input when metadata is genuinely missing or ambiguous (no author found, unclear Dewey category).
 
+## Location Inference
+
+Before running the workflow, determine the source and destination from the user's instruction.
+
+### Source (input)
+
+Look for an explicit path in the user's instruction:
+
+- A path to a single file (e.g. `~/Downloads/book.epub`, `/tmp/novel.pdf`)
+- A path to a directory (e.g. `from ~/Downloads`, `in /mnt/usb/books`)
+- The word "arrivals" or "inbox" — treat as __ARRIVALS_DIR__
+
+Common patterns to detect:
+
+| Instruction fragment | Source |
+|----------------------|--------|
+| "process /some/path/book.epub" | /some/path/book.epub (single file) |
+| "catalog books from /some/dir" | /some/dir/ (directory) |
+| "rename /some/dir" | /some/dir/ (directory) |
+| "this file: /path/to/book.pdf" | /path/to/book.pdf (single file) |
+| no path mentioned | __ARRIVALS_DIR__/ (default) |
+
+### Destination (output)
+
+Look for an explicit destination in the user's instruction:
+
+- "into ~/Library", "to /mnt/storage/books", "destination /path"
+
+| Instruction fragment | Destination |
+|----------------------|-------------|
+| "into /some/dir" | /some/dir/ |
+| "to /some/dir" | /some/dir/ |
+| "destination /some/dir" | /some/dir/ |
+| no destination mentioned | __BOOKS_DIR__/ (default) |
+
+Resolve `~` to the user's home directory. Convert all inferred paths to absolute paths before use.
+
 ## Workflow
 
 ### Single File
 
-1. Extract metadata using the metadata-extraction skill
-2. Format filename using the filename-formatting skill
-3. Assign Dewey category using the dewey-classification skill
-4. Compute SHA-256 hash: `sha256sum "$file" | cut -d' ' -f1`
-5. Append to __BOOKS_DIR__/renames.jsonl
-6. Move file to destination
+1. Infer source file and destination directory from user instruction (see Location Inference)
+2. Extract metadata using the metadata-extraction skill
+3. Format filename using the filename-formatting skill
+4. Assign Dewey category using the dewey-classification skill
+5. Compute SHA-256 hash: `sha256sum "$file" | cut -d' ' -f1`
+6. Append to <destination>/renames.jsonl
+7. Move file to destination
 
 ### Batch Processing
 
-1. List all EPUB/PDF/MOBI/AZW/LIT/HTML files in source directory
-2. For each file, execute steps 1-4 (extract, format, classify, hash)
-3. Log all operations to __BOOKS_DIR__/renames.jsonl
-4. Move all files
+1. Infer source directory and destination directory from user instruction (see Location Inference)
+2. List all EPUB/PDF/MOBI/AZW/LIT/HTML files in source directory
+3. For each file, execute steps 2-5 (extract, format, classify, hash)
+4. Log all operations to <destination>/renames.jsonl
+5. Move all files
 
 ## Log Format
 
-Append JSON lines to __BOOKS_DIR__/renames.jsonl:
+Append JSON lines to <destination>/renames.jsonl:
 
 ```json
 {"hash":"sha256:...","modified":"2025-12-20T12:00:00Z","old_path":"__ARRIVALS_DIR__/...","new_path":"__BOOKS_DIR__/640 - Home Economics & Cooking/Author, Name - Title (Year).epub"}

@@ -10,18 +10,14 @@ Extract bibliographic metadata from ebook files.
 ## Priority Order
 
 1. EPUB OPF metadata (most authoritative)
-2. PDF document properties
-3. Filename parsing (least reliable)
-4. Book text content analysis (when embedded metadata and filename are unhelpful)
-5. User input (for disambiguation only)
-4. Google Books online lookup (to enrich missing or incomplete fields)
-5. User input (for disambiguation only)
 2. MOBI/AZW embedded OPF metadata
 3. PDF document properties
 4. LIT embedded metadata
 5. HTML document metadata
 6. Filename parsing (least reliable)
-7. User input (for disambiguation only)
+7. Book text content analysis (when embedded metadata and filename are unhelpful)
+8. Google Books online lookup (to enrich missing or incomplete fields)
+9. User input (for disambiguation only)
 
 ## EPUB Extraction
 
