@@ -43,7 +43,7 @@ def _build_query(isbn: Optional[str], title: Optional[str], author: Optional[str
         parts.append(f"intitle:{title}")
     if author:
         parts.append(f"inauthor:{author}")
-    return "+".join(parts)
+    return " ".join(parts)
 
 
 def _extract_isbn(identifiers: List[Dict[str, str]], id_type: str) -> Optional[str]:
