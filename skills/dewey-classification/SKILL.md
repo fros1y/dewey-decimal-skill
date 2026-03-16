@@ -10,7 +10,7 @@ Assign Dewey codes and determine the shelf location within the library directory
 ## Assignment Process
 
 1. Identify primary subject matter
-2. **ALWAYS read data/codes.md** (located in the `data/` folder of your Claude config directory) to find the correct code and category name
+2. **ALWAYS read codes.md** (located in the same directory as this skill file) to find the correct code and category name
 3. Check the existing library directory structure
 4. Apply leafing rules to determine final path
 
@@ -18,18 +18,18 @@ Assign Dewey codes and determine the shelf location within the library directory
 
 **NEVER invent or guess category names.** Before creating any directory:
 
-1. Read data/codes.md
+1. Read codes.md
 2. Find the exact line matching the code (e.g., `- 130 Parapsychology and occultism`)
 3. Use the EXACT description from that line as the directory name
 
 Format: `[exact description from codes.md]`
 
-Examples from data/codes.md:
+Examples from codes.md:
 - `- 110 Metaphysics` → directory: `Metaphysics`
 - `- 130 Parapsychology and occultism` → directory: `Parapsychology and occultism`
 - `- 160 Philosophical logic` → directory: `Philosophical logic`
 
-**If you cannot find a code in data/codes.md, ask the user.**
+**If you cannot find a code in codes.md, ask the user.**
 
 ## Leafing Rules
 
@@ -74,13 +74,13 @@ When math reaches 3+ books, create Mathematics subdirectory.
 
 ## Current Structure
 
-Check the library directory before placing. Always verify directory names against data/codes.md.
+Check the library directory before placing. Always verify directory names against codes.md.
 
-Subdirectories are created dynamically based on leafing rules. Do not assume a fixed structure - scan the actual directory and cross-reference with data/codes.md.
+Subdirectories are created dynamically based on leafing rules. Do not assume a fixed structure - scan the actual directory and cross-reference with codes.md.
 
 ## Category Guidelines
 
-Always look up the exact code and name in data/codes.md. Common top-level categories:
+Always look up the exact code and name in codes.md. Common top-level categories:
 
 - **000s** - Computer science, information & general works
 - **100s** - Philosophy (includes Psychology)
@@ -94,16 +94,16 @@ Always look up the exact code and name in data/codes.md. Common top-level catego
 ### Classification Examples
 
 When classifying, find the most specific applicable code:
-- Philosophy of mind → look up 12X codes in data/codes.md
+- Philosophy of mind → look up 12X codes in codes.md
 - Ethics → 170 Ethics (Moral philosophy)
 - Psychology → 150 Psychology
-- Cooking → 641 Food & drink (check data/codes.md for exact name)
+- Cooking → 641 Food & drink (check codes.md for exact name)
 
-**Always verify against data/codes.md before creating directories.**
+**Always verify against codes.md before creating directories.**
 
 ## Code Reference
 
-The authoritative source is `data/codes.md` (in the `data/` folder of your Claude config directory). Read it before every classification decision.
+The authoritative source is `codes.md` (in the same directory as this skill file). Read it before every classification decision.
 
 ## When to Ask User
 

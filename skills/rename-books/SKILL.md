@@ -1,11 +1,9 @@
 ---
 name: rename-books
 description: Process ebooks into a cataloged library. Extracts metadata, formats filenames, assigns Dewey categories, and moves files to the library directory. Supports EPUB, PDF, MOBI, AZW, LIT, and HTML formats. Use for batch processing new ebooks or correcting existing catalog entries.
-tools: Read, Glob, Grep, Bash, Write, Edit
-model: haiku
 ---
 
-# Rename Books Agent
+# Rename Books
 
 Process ebook files into a cataloged library collection.
 
@@ -156,6 +154,8 @@ After processing, report summary:
 
 ## Reference Skills
 
-- @skills/metadata-extraction/SKILL.md
-- @skills/filename-formatting/SKILL.md
-- @skills/dewey-classification/SKILL.md
+This skill orchestrates three companion skills:
+
+- **metadata-extraction** — extracts author, title, year from ebook files
+- **filename-formatting** — formats filenames in citation style
+- **dewey-classification** — assigns Dewey Decimal codes and shelf locations
