@@ -67,13 +67,21 @@ def fetch_metadata(
     if not query:
         return None
 
-    response = requests.get(
-        API_URL,
-        params={"q": query, "maxResults": 1},
-        timeout=REQUEST_TIMEOUT,
-    )
-    response.raise_for_status()
-    data = response.json()
+    try:
+        response = requests.get(
+            API_URL,
+            params={"q": query, "maxResults": 1},
+            timeout=REQUEST_TIMEOUT,
+        )
+        response.raise_for_status()
+        try:
+            data = response.json()
+        except (json.JSONDecodeError, ValueError) as exc:
+            print(f"Error decoding JSON from Google Books API: {exc}", file=sys.stderr)
+            return None
+    except requests.RequestException as exc:
+        print(f"Error communicating with Google Books API: {exc}", file=sys.stderr)
+        return None
 
     items = data.get("items")
     if not items:
