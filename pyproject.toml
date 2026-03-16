@@ -6,3 +6,8 @@ dependencies = [
     "beautifulsoup4>=4.14.3",
     "requests>=2.32.5",
 ]
+
+[project.optional-dependencies]
+mobi = [
+    "mobi>=0.3",
+]
