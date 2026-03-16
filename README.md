@@ -10,13 +10,20 @@ A Claude agent to organize ebooks by the [Dewey Decimal](https://en.wikipedia.or
 
 ## Setup
 
-Run `./install` to install the agents and skills into `~/.claude`.
+Clone this repository into `~/.claude`:
 
 ```bash
-./install
+git clone https://github.com/fros1y/dewey-decimal-skill ~/.claude
 ```
 
-The agent uses `~/Downloads` as the default source directory and `~/Books` as the default library directory. You can override either at any time by mentioning the path in your instruction (see [Usage](#usage)).
+> [!NOTE]
+> If you already have files in `~/.claude`, copy the subdirectories instead:
+> ```bash
+> git clone https://github.com/fros1y/dewey-decimal-skill /tmp/dewey-decimal-skill
+> cp -r /tmp/dewey-decimal-skill/.claude/. ~/.claude/
+> ```
+
+That's it. No install step required. The agent uses `~/Downloads` as the default source directory and `~/Books` as the default library directory. You can override either at any time by mentioning the path in your instruction (see [Usage](#usage)).
 
 ## Usage
 
@@ -42,9 +49,11 @@ The agent stores a history file documenting the before and after filenames, path
 
 ### Regenerating `data/codes.md`
 
-If you want to rebuild the Dewey code index:
+The committed `.claude/data/codes.md` is a static snapshot of the DDC third summary. If you want to rebuild it from source:
+
 ```bash
-python main.py > data/codes.md
+pip install uv
+uv run python main.py > .claude/data/codes.md
 ```
 
 The Classification codes are indexed and cross-compared by these sources:

@@ -125,7 +125,7 @@ Do not auto-delete duplicates. Report for manual review.
 ### Year Correction Rules
 
 Only correct year when ALL conditions met:
-1. EPUB `<dc:date>` contains a valid year (1900-2025)
+1. EPUB `<dc:date>` contains a valid year (1900 or later, not in the future)
 2. The date is a publication date, not modification date (ignore `opf:event="modification"`)
 3. Metadata year differs from filename year
 4. Author and title from metadata match filename (same book, just wrong year)

@@ -1,5 +1,4 @@
 .venv/
-data/
 config.ini
 __pycache__/
 *.pyc

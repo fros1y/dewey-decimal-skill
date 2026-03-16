@@ -10,7 +10,7 @@ Assign Dewey codes and determine the shelf location within the library directory
 ## Assignment Process
 
 1. Identify primary subject matter
-2. **ALWAYS read data/codes.md** to find the correct code and category name
+2. **ALWAYS read data/codes.md** (located in the `data/` folder of your Claude config directory) to find the correct code and category name
 3. Check the existing library directory structure
 4. Apply leafing rules to determine final path
 
@@ -103,7 +103,7 @@ When classifying, find the most specific applicable code:
 
 ## Code Reference
 
-The authoritative source is data/codes.md. Read it before every classification decision.
+The authoritative source is `data/codes.md` (in the `data/` folder of your Claude config directory). Read it before every classification decision.
 
 ## When to Ask User
 
